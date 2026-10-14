@@ -20,9 +20,20 @@ def compute_efield(rho, dx):
 
 
 def advection_x(f, x, v, dt):
-    # Your existing interpolation implementation
-    ...
+    alpha = dt * v
+
+    f_new = np.stack([
+        np.interp(x-alpha[j], x, f[:, j],period=x[-1]-x[0])
+        for j in range(np.shape(f)[1])
+    ], axis=1)
+    return f_new
 
 def advection_v(f, v, efield, dt):
-    # Your existing interpolation implementation
-    ...
+
+    alpha = dt * efield
+
+    f_new = np.stack([
+        np.interp(v-alpha[i], v, f[i, :])
+        for i in range(np.shape(f)[0])
+    ], axis=0)
+    return f_new
