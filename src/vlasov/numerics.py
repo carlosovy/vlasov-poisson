@@ -1,6 +1,7 @@
 
 import numpy as np
 from scipy.fft import fft, ifft, fftfreq
+from scipy.interpolate import CubicSpline
 
 def compute_rho(f, dv):
     return dv * np.sum(f, axis=1)
@@ -19,21 +20,46 @@ def compute_efield(rho, dx):
     return np.real(ifft(e_hat))
 
 
-def advection_x(f, x, v, dt):
+def linear_interpolate(grid, values, points, periodic=False):
+    """Linear interpolation; clamp at endpoints if nonperiodic."""
+    if periodic:
+        period = (grid[1] - grid[0]) * len(grid)
+        return np.interp(points, grid, values, period=period)
+    return np.interp(points, grid, values)
+
+
+
+def cubic_interpolate(grid, values, points, periodic=False):
+    """Cubic spline interpolation with periodic or clamped boundaries."""
+    if periodic:
+        period = (grid[1] - grid[0]) * len(grid)
+        # Include the periodic endpoint required by scipy's CubicSpline.
+        x = np.append(grid, grid[0] + period)
+        y = np.append(values, values[0])
+        spline = CubicSpline(x, y, bc_type="periodic")
+        return spline(points)
+    spline = CubicSpline(grid, values, bc_type="natural")
+    return spline(np.clip(points, grid[0], grid[-1]))
+
+
+
+
+def advection_x(f, x, v, dt, interpolate=linear_interpolate):
     alpha = dt * v
 
     f_new = np.stack([
-        np.interp(x-alpha[j], x, f[:, j],period=x[-1]-x[0])
-        for j in range(np.shape(f)[1])
+        interpolate(x, f[:, j], x - alpha[j], periodic=True)
+        for j in range(f.shape[1])
     ], axis=1)
     return f_new
 
-def advection_v(f, v, efield, dt):
+def advection_v(f, v, efield, dt, interpolate=linear_interpolate):
 
     alpha = dt * efield
 
     f_new = np.stack([
-        np.interp(v-alpha[i], v, f[i, :])
-        for i in range(np.shape(f)[0])
+        interpolate(v, f[i, :], v - alpha[i], periodic=False)
+        for i in range(f.shape[0])
     ], axis=0)
     return f_new
+
