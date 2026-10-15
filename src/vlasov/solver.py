@@ -8,7 +8,7 @@ from .numerics import (
     compute_efield,
     linear_interpolate,
 )
-from .diagnostics import electric_energy
+from .diagnostics import electric_energy, total_rho, total_energy
 
 
 def step(f, grid, dt, interp_x=linear_interpolate, interp_v=linear_interpolate):
@@ -26,14 +26,18 @@ def step(f, grid, dt, interp_x=linear_interpolate, interp_v=linear_interpolate):
 
 def run(f0, grid, dt, nsteps, interp_x=linear_interpolate, interp_v=linear_interpolate):
     f = f0.copy()
-    energy = np.empty(nsteps + 1)
+    el_energy = np.empty(nsteps + 1)
+    totrho = np.empty(nsteps + 1)
+    totenergy = np.empty(nsteps + 1)
 
     for i in range(nsteps + 1):
         rho = compute_rho(f, grid.dv)
         efield = compute_efield(rho, grid.dx)
-        energy[i] = electric_energy(efield, grid.dx)
+        el_energy[i] = electric_energy(efield, grid.dx)
+        totrho[i] = total_rho(f,grid.dx, grid.dv)
+        totenergy[i] = total_energy(f,efield,grid.v,grid.dx,grid.dv)
 
         if i < nsteps:
             f = step(f, grid, dt, interp_x, interp_v)
 
-    return f, energy
+    return f, el_energy, totrho, totenergy
