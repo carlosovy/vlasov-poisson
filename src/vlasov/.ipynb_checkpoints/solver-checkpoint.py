@@ -54,6 +54,45 @@ def step(f, grid, dt, interp_x=linear_interpolate, interp_v=linear_interpolate):
 
 
 def run(f0, grid, dt, nsteps, interp_x=linear_interpolate, interp_v=linear_interpolate):
+    """Run the Vlasov-Poisson simulation using Strang splitting.
+
+    The distribution function is evolved in time using
+    semi-Lagrangian advection in position and velocity.
+    The distribution and diagnostic quantities are stored
+    at every time step, including the initial state.
+
+    Parameters
+    ----------
+    f0 : ndarray
+        Initial distribution function with shape (nx, nv).
+    grid : Grid
+        Spatial and velocity grid configuration.
+    dt : float
+        Time step size.
+    nsteps : int
+        Number of time steps to perform.
+    interp_x : callable, optional
+        Interpolation function used for spatial advection.
+        Defaults to linear interpolation.
+    interp_v : callable, optional
+        Interpolation function used for velocity advection.
+        Defaults to linear interpolation.
+
+    Returns
+    -------
+    fdistribu_evol : ndarray
+        Distribution function at every stored time step,
+        with shape (nsteps + 1, nx, nv).
+    el_energy : ndarray
+        Logarithmic electric-field diagnostic at every
+        time step, with shape (nsteps + 1,).
+    totrho : ndarray
+        Total integrated particle density at every
+        time step, with shape (nsteps + 1,).
+    totenergy : ndarray
+        Total kinetic and electric-field energy at every
+        time step, with shape (nsteps + 1,).
+    """
     f = f0.copy()
     fdistribu_evol = np.zeros((nsteps+1, grid.nx, grid.nv))
     el_energy = np.empty(nsteps + 1)

@@ -40,6 +40,37 @@ def compute_rho(f, dv):
 
 
 def compute_efield(rho, dx):
+    """Compute the electric field using a Fourier spectral method.
+
+    Parameters
+    ----------
+    rho : ndarray
+        Spatial density with shape (nx,).
+    dx : float
+        Uniform spatial grid spacing.
+
+    Returns
+    -------
+    ndarray
+        Real-valued electric field with shape (nx,).
+
+    Notes
+    -----
+    The electric field is obtained in Fourier space from
+
+    .. math::
+
+        \\hat{E}(k) = -\\frac{i\\hat{\\rho}(k)}{k},
+
+    for nonzero wavenumbers.
+
+    The zero Fourier mode is set to zero, enforcing a
+    zero-mean electric field.
+
+    The method assumes a uniform, periodic spatial grid.
+    The resulting field satisfies the spectral relation
+    dE/dx = rho - mean(rho).
+    """
     nx = len(rho)
     k = 2 * np.pi * fftfreq(nx, d=dx)
 
@@ -102,11 +133,6 @@ def advection_x(f, x, v, dt, interpolate=linear_interpolate):
 
     Notes
     -----
-    The departure points are computed as
-    .. math::
-
-        x_d = x - v \Delta t.
-
     Periodic boundary conditions are imposed in the spatial
     direction.
     """
@@ -146,11 +172,6 @@ def advection_v(f, v, efield, dt, interpolate=linear_interpolate):
 
     Notes
     -----
-    The departure points are computed as
-
-    .. math::
-
-        x_d = x - v \Delta t.
 
     Periodic boundary conditions are imposed in the spatial
     direction.

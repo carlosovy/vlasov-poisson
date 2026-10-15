@@ -10,3 +10,6 @@ src/vlasov_poisson.egg-info/SOURCES.txt
 src/vlasov_poisson.egg-info/dependency_links.txt
 src/vlasov_poisson.egg-info/requires.txt
 src/vlasov_poisson.egg-info/top_level.txt
+tests/test_diagnostics.py
+tests/test_numerics.py
+tests/test_solver.py

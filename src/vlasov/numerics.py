@@ -133,11 +133,6 @@ def advection_x(f, x, v, dt, interpolate=linear_interpolate):
 
     Notes
     -----
-    The departure points are computed as
-    .. math::
-
-        x_d = x - v \Delta t.
-
     Periodic boundary conditions are imposed in the spatial
     direction.
     """
@@ -177,11 +172,6 @@ def advection_v(f, v, efield, dt, interpolate=linear_interpolate):
 
     Notes
     -----
-    The departure points are computed as
-
-    .. math::
-
-        x_d = x - v \Delta t.
 
     Periodic boundary conditions are imposed in the spatial
     direction.

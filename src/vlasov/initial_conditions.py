@@ -7,7 +7,7 @@ and the bump-on-tail instability.
 import numpy as np
 
 def maxwellian(v, temperature=1.0):
-     """Evaluate a normalized one-dimensional Maxwellian distribution.
+    """Evaluate a normalized one-dimensional Maxwellian distribution.
     Parameters
     ----------
     v : array_like
