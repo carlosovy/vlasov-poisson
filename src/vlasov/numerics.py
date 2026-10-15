@@ -1,13 +1,76 @@
+"""Numerical methods for the one-dimensional Vlasov-Poisson solver.
+
+This module provides methods for computing particle density,
+solving for the electric field using Fourier transforms, and
+performing semi-Lagrangian advection in phase space.
+
+Both linear and cubic spline interpolation are supported.
+"""
 
 import numpy as np
 from scipy.fft import fft, ifft, fftfreq
 from scipy.interpolate import CubicSpline
 
 def compute_rho(f, dv):
+    """Compute the spatial density by integrating over velocity.
+
+    Parameters
+    ----------
+    f : ndarray
+        Distribution function with shape (nx, nv).
+    dv : float
+        Uniform velocity grid spacing.
+
+    Returns
+    -------
+    ndarray
+        Spatial density with shape (nx,).
+
+    Notes
+    -----
+    The velocity integral is approximated by a discrete sum:
+
+    .. math::
+
+        \\rho(x_i) = \\Delta v \\sum_j f(x_i, v_j).
+
+    The velocity dimension corresponds to axis 1 of `f`.
+    """
     return dv * np.sum(f, axis=1)
 
 
 def compute_efield(rho, dx):
+    """Compute the electric field using a Fourier spectral method.
+
+    Parameters
+    ----------
+    rho : ndarray
+        Spatial density with shape (nx,).
+    dx : float
+        Uniform spatial grid spacing.
+
+    Returns
+    -------
+    ndarray
+        Real-valued electric field with shape (nx,).
+
+    Notes
+    -----
+    The electric field is obtained in Fourier space from
+
+    .. math::
+
+        \\hat{E}(k) = -\\frac{i\\hat{\\rho}(k)}{k},
+
+    for nonzero wavenumbers.
+
+    The zero Fourier mode is set to zero, enforcing a
+    zero-mean electric field.
+
+    The method assumes a uniform, periodic spatial grid.
+    The resulting field satisfies the spectral relation
+    dE/dx = rho - mean(rho).
+    """
     nx = len(rho)
     k = 2 * np.pi * fftfreq(nx, d=dx)
 
@@ -45,6 +108,40 @@ def cubic_interpolate(grid, values, points, periodic=False):
 
 
 def advection_x(f, x, v, dt, interpolate=linear_interpolate):
+    """Advect the distribution function along space.
+    The advection is performed using a semi-Lagrangian method,
+    evaluating the distribution at the departure points.
+
+    Parameters
+    ----------
+    f : ndarray
+        Distribution function with shape (nx, nv).
+    x : ndarray
+        Spatial grid coordinates with shape (nx,).
+    v : ndarray
+        Velocity grid coordinates with shape (nv,).
+    dt : float
+        Time step used for advection.
+    interpolate : callable, optional
+        Interpolation function used to evaluate the distribution
+        at departure points. Defaults to linear interpolation.
+
+    Returns
+    -------
+    ndarray
+        Advected distribution function with shape (nx, nv).
+
+    Notes
+    -----
+    The departure points are computed as
+    .. math::
+
+        x_d = x - v \Delta t.
+
+    Periodic boundary conditions are imposed in the spatial
+    direction.
+    """
+
     alpha = dt * v
 
     f_new = np.stack([
@@ -54,6 +151,41 @@ def advection_x(f, x, v, dt, interpolate=linear_interpolate):
     return f_new
 
 def advection_v(f, v, efield, dt, interpolate=linear_interpolate):
+    """Advect the distribution function along the velocity direction.
+
+    The advection is performed using a semi-Lagrangian method,
+    evaluating the distribution at the departure points.
+
+    Parameters
+    ----------
+    f : ndarray
+        Distribution function with shape (nx, nv).
+    v : ndarray
+        Velocity grid coordinates with shape (nv,).
+    efield : ndarray
+        Electric field array with shape (nx,).
+    dt : float
+        Time step used for advection.
+    interpolate : callable, optional
+        Interpolation function used to evaluate the distribution
+        at departure points. Defaults to linear interpolation.
+
+    Returns
+    -------
+    ndarray
+        Advected distribution function with shape (nx, nv).
+
+    Notes
+    -----
+    The departure points are computed as
+
+    .. math::
+
+        x_d = x - v \Delta t.
+
+    Periodic boundary conditions are imposed in the spatial
+    direction.
+    """
 
     alpha = dt * efield
 

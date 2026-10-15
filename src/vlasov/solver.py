@@ -12,10 +12,39 @@ from .diagnostics import electric_energy, total_rho, total_energy
 
 
 def step(f, grid, dt, interp_x=linear_interpolate, interp_v=linear_interpolate):
-    """One Strang-splitting time step."""
+    """Advance the distribution by one Strang-splitting time step.
+
+    Parameters
+    ----------
+    f : ndarray
+        Distribution function with shape (nx, nv).
+    grid : Grid
+        Spatial and velocity grid structure.
+    dt : float
+        Time step.
+    interp_x, interp_v : callable, optional
+        Interpolation functions used for spatial and velocity advection.
+
+    Returns
+    -------
+    ndarray
+        Updated distribution function with shape (nx, nv).
+    
+    Notes
+    -----
+    The Strang splitting scheme consists of three stages:
+    
+    1. Spatial advection over half a time step.
+    2. Velocity advection over a full time step.
+    3. Spatial advection over the remaining half time step.
+    
+    The electric field is computed after the first spatial
+    advection stage.
+    """
     f = advection_x(f, grid.x, grid.v, dt / 2, interp_x)
 
-    rho = compute_rho(f, grid.dv)
+    #Need Poisson Solve for Efield to do velocity advection
+    rho = compute_rho(f, grid.dv) 
     efield = compute_efield(rho, grid.dx)
 
     f = advection_v(f, grid.v, efield, dt, interp_v)

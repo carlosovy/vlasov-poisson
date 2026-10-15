@@ -2,7 +2,9 @@
 from dataclasses import dataclass
 import numpy as np
 
-@dataclass(frozen=True)
+#Dataclass for space and velocity grid
+#Properties like minimum, maximum, number of points, or the array itself can be accessed
+@dataclass(frozen=True) #Frozen means its attributes cant be changed after creation
 class Grid:
     xmin: float
     xmax: float
