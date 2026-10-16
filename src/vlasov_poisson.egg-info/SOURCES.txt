@@ -3,7 +3,9 @@ src/vlasov/__init__.py
 src/vlasov/config.py
 src/vlasov/diagnostics.py
 src/vlasov/initial_conditions.py
+src/vlasov/linear_theory.py
 src/vlasov/numerics.py
+src/vlasov/plotting.py
 src/vlasov/solver.py
 src/vlasov_poisson.egg-info/PKG-INFO
 src/vlasov_poisson.egg-info/SOURCES.txt

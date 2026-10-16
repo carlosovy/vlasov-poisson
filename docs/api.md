@@ -63,3 +63,17 @@ of the Vlasov-Poisson package.
    vlasov.solver.step
    vlasov.solver.run
 ```
+
+## Linear theory
+
+```{eval-rst}
+.. automodule:: vlasov.linear_theory
+   :members:
+```
+
+## Plotting
+
+```{eval-rst}
+.. automodule:: vlasov.plotting
+   :members:
+```

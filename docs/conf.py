@@ -27,7 +27,7 @@ autodoc_default_options = {
 }
 
 # Use the standard Sphinx HTML theme.
-html_theme = "alabaster"
+html_theme = "pydata_sphinx_theme"
 
 # Exclude generated documentation from source scanning.
 exclude_patterns = ["build"]
