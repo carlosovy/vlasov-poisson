@@ -24,3 +24,10 @@ docs/build/index.html
 docs/build/objects.inv
 docs/build/search.html
 docs/build/searchindex.js
+*.pyc
+/docs/generated
+/docs/build
+/src/vlasov/__pycache__
+/src/vlasov/__pycache__
+src/vlasov/__pycache__/plotting.cpython-313.pyc
+src/vlasov/__pycache__/linear_theory.cpython-313.pyc
