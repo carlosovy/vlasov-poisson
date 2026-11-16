@@ -56,7 +56,7 @@ particle-number and total-energy diagnostics.
 | [`bump-on-tail`](notebooks/bump-on-tail.ipynb) | Bump-on-tail instability and nonlinear saturation |
 | [`growth_rate_comparison`](notebooks/growth_rate_comparison.ipynb) | Simulated growth rates vs. linear theory |
 | [`dispersion_explorer`](notebooks/dispersion_explorer.ipynb) | Interactive dispersion-relation explorer (ipywidgets) |
-| [`vlasov_portfolio_visuals`](notebooks/vlasov_portfolio_visuals.ipynb) | Summary figures |
+| [`vlasov_visuals`](notebooks/vlasov_visuals.ipynb) | Summary figures |
 | [`prototype/`](notebooks/prototype/) | The original single-notebook prototype this package grew from |
 
 ## Project layout
