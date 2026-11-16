@@ -94,7 +94,8 @@ sphinx-build -b html docs docs/build
 
 The prototype in `notebooks/prototype/` uses a B-spline module (`bsl.py`) written by
 [Pierre Navaro](https://github.com/pnavaro), from his
-[Python/Fortran Vlasov-Poisson tutorial](https://pnavaro.github.io/python-fortran/04.vlasov-poisson.html#semi-lagrangian-method).
+[Python/Fortran Vlasov-Poisson tutorial](https://pnavaro.github.io/python-fortran/04.vlasov-poisson.html#semi-lagrangian-method),
+used under the MIT License (see the file header).
 
 ## License
 
