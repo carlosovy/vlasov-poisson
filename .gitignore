@@ -31,3 +31,5 @@ docs/build/searchindex.js
 /src/vlasov/__pycache__
 src/vlasov/__pycache__/plotting.cpython-313.pyc
 src/vlasov/__pycache__/linear_theory.cpython-313.pyc
+*.gif
+*.gif
