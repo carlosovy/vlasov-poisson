@@ -1,35 +1,26 @@
-C:\Users\Carlos\Documents\vlasov\vlasov\docs\build
-docs/build/.buildinfo
-docs/build/.buildinfo.bak
-docs/build/.doctrees/api.doctree
-docs/build/.doctrees/environment.pickle
-docs/build/.doctrees/index.doctree
-docs/build/_sources/api.md.txt
-docs/build/_sources/index.md.txt
-docs/build/_static/alabaster.css
-docs/build/_static/basic.css
-docs/build/_static/custom.css
-docs/build/_static/doctools.js
-docs/build/_static/documentation_options.js
-docs/build/_static/file.png
-docs/build/_static/language_data.js
-docs/build/_static/minus.png
-docs/build/_static/plus.png
-docs/build/_static/pygments.css
-docs/build/_static/searchtools.js
-docs/build/_static/sphinx_highlight.js
-docs/build/api.html
-docs/build/genindex.html
-docs/build/index.html
-docs/build/objects.inv
-docs/build/search.html
-docs/build/searchindex.js
-*.pyc
-/docs/generated
-/docs/build
-/src/vlasov/__pycache__
-/src/vlasov/__pycache__
-src/vlasov/__pycache__/plotting.cpython-313.pyc
-src/vlasov/__pycache__/linear_theory.cpython-313.pyc
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Testing
+.pytest_cache/
+.coverage
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Sphinx
+docs/build/
+docs/generated/
+
+# Large animations
 *.gif
-*.gif
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

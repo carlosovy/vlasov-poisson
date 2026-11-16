@@ -5,11 +5,24 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vlasov-poisson"
 version = "0.1.0"
+description = "Semi-Lagrangian solver for the 1D Vlasov-Poisson system"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "carlosovy" }]
+requires-python = ">=3.9"
 dependencies = [
     "numpy",
     "scipy",
     "matplotlib",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+notebooks = ["jupyter", "ipywidgets"]
+docs = ["sphinx", "myst-parser", "pydata-sphinx-theme"]
+
+[project.urls]
+Repository = "https://github.com/carlosovy/vlasov-poisson"
 
 [tool.setuptools.packages.find]
 where = ["src"]
